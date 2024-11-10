@@ -16,10 +16,36 @@ document.addEventListener("DOMContentLoaded", () => {
   const rangeEnd = document.getElementById("range-end");
   const batchSize = document.getElementById("batch-size");
 
+  if (
+    !dropZone ||
+    !fileInput ||
+    !fileName ||
+    !form ||
+    !groupNameInput ||
+    !submitBtn ||
+    !statusAlert ||
+    !columnSelector ||
+    !advancedToggle ||
+    !advancedOptions ||
+    !rangeOptions ||
+    !batchOptions ||
+    !rangeStart ||
+    !rangeEnd ||
+    !batchSize
+  ) {
+    console.error("Required DOM elements not found");
+    return;
+  }
+
   function populateColumnSelector(headers) {
     try {
+      if (!Array.isArray(headers)) {
+        throw new Error("Invalid headers format");
+      }
+
       columnSelector.innerHTML =
         '<option value="">Select Phone Number Column</option>';
+
       for (let i = 0; i < 26; i++) {
         const option = document.createElement("option");
         option.value = i;
@@ -30,21 +56,28 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       console.error("Error populating column selector:", error);
-      showStatus("error", "Error setting up column selection options.");
+      showStatus(
+        "error",
+        `Error setting up column selection options: ${error.message}`,
+      );
     }
   }
 
   dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
+    e.stopPropagation();
     dropZone.classList.add("active");
   });
 
-  dropZone.addEventListener("dragleave", () => {
+  dropZone.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     dropZone.classList.remove("active");
   });
 
   dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
+    e.stopPropagation();
     dropZone.classList.remove("active");
     const file = e.dataTransfer.files[0];
     handleFile(file);
@@ -67,39 +100,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   batchTypeRadios.forEach((radio) => {
     radio.addEventListener("change", (e) => {
-      rangeOptions.classList.add("hidden");
-      batchOptions.classList.add("hidden");
+      try {
+        rangeOptions.classList.add("hidden");
+        batchOptions.classList.add("hidden");
 
-      if (e.target.value === "range") {
-        rangeOptions.classList.remove("hidden");
-      } else if (e.target.value === "batch") {
-        batchOptions.classList.remove("hidden");
+        if (e.target.value === "range") {
+          rangeOptions.classList.remove("hidden");
+        } else if (e.target.value === "batch") {
+          batchOptions.classList.remove("hidden");
+        }
+      } catch (error) {
+        console.error("Error handling batch type change:", error);
       }
     });
   });
 
   async function handleFile(file) {
-    if (!file) {
-      showStatus("error", "No file selected.");
-      return;
-    }
-
-    if (
-      !(
-        file.name.endsWith(".xlsx") ||
-        file.name.endsWith(".xls") ||
-        file.name.endsWith(".csv")
-      )
-    ) {
-      showStatus("error", "Please select a valid Excel or CSV file.");
-      return;
-    }
-
-    fileName.textContent = `Selected file: ${file.name}`;
-
     try {
+      if (!file) {
+        showStatus("error", "No file selected.");
+        return;
+      }
+
+      const validExtensions = [".xlsx", ".xls", ".csv"];
+      const hasValidExtension = validExtensions.some((ext) =>
+        file.name.toLowerCase().endsWith(ext),
+      );
+
+      if (!hasValidExtension) {
+        showStatus("error", "Please select a valid Excel or CSV file.");
+        return;
+      }
+
+      fileName.textContent = `Selected file: ${file.name}`;
+
       let headers;
-      if (file.name.endsWith(".csv")) {
+      if (file.name.toLowerCase().endsWith(".csv")) {
         const text = await file.text();
         if (!text.trim()) {
           throw new Error("File is empty");
@@ -162,12 +198,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (validatePhoneNumber(number)) {
         try {
           const contactIndex = startIndex + index + 1;
+          const sanitizedGroupName = groupName.replace(/[<>:"\/\\|?*]/g, "_");
+
           vcf += "BEGIN:VCARD\n";
           vcf += "VERSION:3.0\n";
-          vcf += `N:${groupName}_${contactIndex};;;\n`;
-          vcf += `FN:${groupName}_${contactIndex}\n`;
+          vcf += `N:${sanitizedGroupName}_${contactIndex};;;\n`;
+          vcf += `FN:${sanitizedGroupName}_${contactIndex}\n`;
           vcf += `TEL;TYPE=CELL:+91${number}\n`;
-          vcf += `X-WhatsApp-Group:${groupName}\n`;
+          vcf += `X-WhatsApp-Group:${sanitizedGroupName}\n`;
           vcf += "END:VCARD\n\n";
           validNumbers++;
         } catch (error) {
@@ -189,6 +227,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showStatus(type, message) {
     try {
+      if (!statusAlert) {
+        console.error("Status alert element not found");
+        return;
+      }
       statusAlert.className = `alert ${type}`;
       statusAlert.textContent = message;
       statusAlert.classList.remove("hidden");
@@ -198,13 +240,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setTimedLinkColor() {
-    const hour = new Date().getHours();
-    const color = hour >= 6 && hour < 18 ? "#FFC799" : "#99FFE4";
-    document.documentElement.style.setProperty("--time-based-color", color);
+    try {
+      const hour = new Date().getHours();
+      const color = hour >= 6 && hour < 18 ? "#FFC799" : "#99FFE4";
+      document.documentElement.style.setProperty("--time-based-color", color);
+    } catch (error) {
+      console.error("Error setting timed link color:", error);
+    }
   }
 
   setTimedLinkColor();
-
   setInterval(setTimedLinkColor, 60000);
 
   form.addEventListener("submit", async (e) => {
@@ -298,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       } else if (batchType === "batch") {
         const size = parseInt(batchSize.value);
-        if (isNaN(size) || size <= 0) {
+        if (isNaN(size) || size <= 0 || size > numbers.length) {
           throw new Error("Invalid batch size");
         }
 
@@ -307,8 +352,9 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < numbers.length; i += size) {
           const batch = numbers.slice(i, i + size);
           const vcfContent = createVcfContacts(batch, i);
+          const batchNum = Math.floor(i / size) + 1;
           zip.file(
-            `${groupNameInput.value}_batch${Math.floor(i / size) + 1}_contacts.vcf`,
+            `${groupNameInput.value}_batch${batchNum}_contacts.vcf`,
             vcfContent,
           );
         }
