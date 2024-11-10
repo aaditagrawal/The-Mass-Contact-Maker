@@ -29,8 +29,8 @@ body {
 
 .github-button-container {
     display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .github-button-container a {
