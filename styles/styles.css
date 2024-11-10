@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap");
 
@@ -11,6 +10,15 @@
     --success-color: #32d74b;
     --error-color: #ff453a;
     --time-based-color: #ffc799;
+    --transition-default: all 0.3s ease;
+    --border-radius-sm: 7px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 18px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 40px;
 }
 
 body {
@@ -26,13 +34,13 @@ body {
 .container {
     max-width: 980px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: var(--spacing-xl) var(--spacing-lg);
 }
 
 .github-button-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: var(--spacing-lg);
 }
 
 .github-button-container a {
@@ -53,7 +61,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 12px 48px;
+    padding: var(--spacing-md) 48px;
     color: #fff;
     background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
     background-position: 0;
@@ -69,49 +77,11 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
-@-moz-keyframes shine {
-    0% {
-        background-position: 0;
-    }
-    60% {
-        background-position: 180px;
-    }
-    100% {
-        background-position: 180px;
-    }
-}
-
-@-webkit-keyframes shine {
-    0% {
-        background-position: 0;
-    }
-    60% {
-        background-position: 180px;
-    }
-    100% {
-        background-position: 180px;
-    }
-}
-
-@-o-keyframes shine {
-    0% {
-        background-position: 0;
-    }
-    60% {
-        background-position: 180px;
-    }
-    100% {
-        background-position: 180px;
-    }
-}
-
 @keyframes shine {
     0% {
         background-position: 0;
     }
-    60% {
-        background-position: 180px;
-    }
+    60%,
     100% {
         background-position: 180px;
     }
@@ -126,9 +96,9 @@ body {
     border: none;
     background-color: transparent;
     position: relative;
-    border-radius: 7px;
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    transition: all 0.3s;
+    transition: var(--transition-default);
 }
 
 .svgContainer {
@@ -138,10 +108,10 @@ body {
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    backdrop-filter: blur(0px);
+    backdrop-filter: blur(0);
     letter-spacing: 0.8px;
-    border-radius: 10px;
-    transition: all 0.3s;
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-default);
     border: 1px solid rgba(156, 156, 156, 0.466);
 }
 
@@ -152,9 +122,9 @@ body {
     height: 100%;
     background: #181818;
     z-index: -1;
-    border-radius: 10px;
+    border-radius: var(--border-radius-md);
     pointer-events: none;
-    transition: all 0.3s;
+    transition: var(--transition-default);
 }
 
 .Btn:hover .BG {
@@ -174,7 +144,7 @@ body {
     font-weight: 700;
     color: var(--text-primary);
     text-align: left;
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
     max-width: 680px;
     margin-left: auto;
     margin-right: auto;
@@ -208,7 +178,7 @@ body {
     font-weight: 600;
     letter-spacing: 0.007em;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: var(--spacing-xl);
 }
 
 .feature-grid {
@@ -223,9 +193,9 @@ body {
 }
 
 .instructions-box ul ul {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    padding-left: 20px;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-lg);
 }
 
 .instructions-box ul ul li {
@@ -242,13 +212,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 16px;
+    margin: 0 auto var(--spacing-md);
     font-weight: 600;
 }
 
 .feature h3 {
     font-size: 21px;
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
 }
 
 .feature p {
@@ -259,12 +229,12 @@ body {
 
 .drop-zone {
     border: 2px dashed var(--border-color);
-    border-radius: 18px;
-    padding: 40px;
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-xl);
     text-align: center;
-    transition: all 0.3s ease;
+    transition: var(--transition-default);
     cursor: pointer;
-    margin-bottom: 24px;
+    margin-bottom: var(--spacing-lg);
 }
 
 .drop-zone:hover,
@@ -275,11 +245,11 @@ body {
 
 .upload-icon {
     fill: var(--accent-color);
-    margin-bottom: 12px;
+    margin-bottom: var(--spacing-md);
 }
 
 .upload-section {
-    margin-top: 40px;
+    margin-top: var(--spacing-xl);
 }
 
 .drop-text {
@@ -294,11 +264,11 @@ body {
 
 .input {
     width: 100%;
-    padding: 12px 16px;
+    padding: var(--spacing-md) var(--spacing-md);
     font-size: 17px;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    margin-bottom: 24px;
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-lg);
     transition: border-color 0.2s ease;
     background: var(--background-color);
     color: var(--text-primary);
@@ -310,9 +280,9 @@ body {
 }
 
 .input-group select {
-    padding: 12px 16px;
+    padding: var(--spacing-md) var(--spacing-md);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     font-size: 17px;
     background-color: var(--background-color);
     color: var(--text-primary);
@@ -320,7 +290,7 @@ body {
     max-height: 200px;
     overflow-y: auto;
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: var(--spacing-lg);
     transition: border-color 0.2s ease;
 }
 
@@ -334,8 +304,8 @@ body {
     background-color: var(--accent-color);
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 12px 24px;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
     font-size: 17px;
     font-weight: 500;
     width: 100%;
@@ -348,9 +318,9 @@ body {
 }
 
 .alert {
-    padding: 16px;
-    border-radius: 12px;
-    margin-top: 24px;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-top: var(--spacing-lg);
     font-size: 15px;
 }
 
@@ -366,7 +336,7 @@ body {
 
 .advanced-toggle {
     text-align: left;
-    margin-bottom: 16px;
+    margin-bottom: var(--spacing-md);
 }
 
 .text-button {
@@ -378,7 +348,7 @@ body {
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
 }
 
 .text-button:hover {
@@ -392,22 +362,22 @@ body {
         rgba(255, 255, 255, 0.02) 100%
     );
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
 }
 
 .option-group h3 {
     font-family: "DM Sans", sans-serif;
-    margin: 0 0 20px 0;
+    margin: 0 0 var(--spacing-lg) 0;
     font-size: 18px;
     font-weight: 500;
     color: var(--accent-color);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
 }
 
 .option-group h3::before {
@@ -418,19 +388,19 @@ body {
 .radio-group {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 8px 0;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
 }
 
 .radio-option {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--spacing-md);
     cursor: pointer;
-    padding: 12px 16px;
+    padding: var(--spacing-md) var(--spacing-md);
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    transition: all 0.2s ease;
+    border-radius: var(--border-radius-md);
+    transition: var(--transition-default);
 }
 
 .radio-option:hover {
@@ -446,7 +416,7 @@ body {
     border-radius: 50%;
     margin: 0;
     position: relative;
-    transition: all 0.2s ease;
+    transition: var(--transition-default);
 }
 
 .radio-option input[type="radio"]:checked {
@@ -468,7 +438,7 @@ body {
 
 .input-row {
     display: flex;
-    gap: 16px;
+    gap: var(--spacing-md);
     margin-bottom: 0;
 }
 
@@ -478,10 +448,10 @@ body {
 }
 
 .sub-options {
-    margin-top: 20px;
-    padding: 20px;
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
     background: rgba(10, 132, 255, 0.05);
-    border-radius: 12px;
+    border-radius: var(--border-radius-md);
     border: 1px solid rgba(10, 132, 255, 0.1);
 }
 
@@ -490,7 +460,7 @@ body {
     font-size: 14px;
     font-weight: 500;
     color: var(--accent-color);
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
     display: block;
 }
 
@@ -503,7 +473,7 @@ body {
 .sub-options .input {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.2s ease;
+    transition: var(--transition-default);
     margin-bottom: 0;
     width: 100%;
     box-sizing: border-box;
@@ -516,7 +486,7 @@ body {
 }
 
 .input-row .input-group label {
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
     display: block;
 }
 
@@ -542,10 +512,10 @@ body {
 
     .feature-grid {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: var(--spacing-lg);
     }
 
     .drop-zone {
-        padding: 24px;
+        padding: var(--spacing-lg);
     }
 }

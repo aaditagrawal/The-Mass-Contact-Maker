@@ -48,9 +48,12 @@
         />
         <link rel="shortcut icon" href="favicon/favicon.ico" />
         <link rel="stylesheet" href="styles/styles.css" />
-        <script src="lib/xlsx.full.min.js"></script>
-        <script src="lib/FileSaver.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script src="lib/xlsx.full.min.js" defer></script>
+        <script src="lib/FileSaver.min.js" defer></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+            defer
+        ></script>
     </head>
     <body>
         <div class="container">
@@ -62,8 +65,6 @@
                 </p>
 
                 <div class="content-section">
-                    <!-- Instructions Box -->
-                    <!-- Instructions Box -->
                     <div class="instructions-box">
                         <div class="instructions-section">
                             <h2>Quick Start</h2>
@@ -94,7 +95,6 @@
                         </div>
                     </div>
 
-                    <!-- Upload Section -->
                     <div class="upload-section">
                         <form id="contact-form">
                             <div id="drop-zone" class="drop-zone">
@@ -102,7 +102,7 @@
                                     type="file"
                                     id="file-input"
                                     accept=".xlsx,.xls,.csv"
-                                    style="display: none"
+                                    hidden
                                 />
                                 <div class="drop-zone-content">
                                     <svg
@@ -129,9 +129,7 @@
                                 <input
                                     type="text"
                                     id="group-name"
-                                    value=""
                                     class="input"
-                                    style="width: 100%; box-sizing: border-box"
                                     placeholder="Enter Group Name"
                                 />
                             </div>
@@ -140,7 +138,6 @@
                                 <select
                                     id="column-selector"
                                     class="input"
-                                    style="width: 100%; box-sizing: border-box"
                                     required
                                 >
                                     <option value="">
@@ -149,7 +146,6 @@
                                 </select>
                             </div>
 
-                            <!-- Advanced Mode Toggle -->
                             <div class="advanced-toggle">
                                 <button
                                     type="button"
@@ -161,7 +157,6 @@
                                 </button>
                             </div>
 
-                            <!-- Advanced Options Section -->
                             <div
                                 id="advanced-options"
                                 class="advanced-options hidden"
@@ -197,7 +192,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Range Options (Initially Hidden) -->
                                 <div
                                     id="range-options"
                                     class="sub-options hidden"
@@ -227,7 +221,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Batch Options (Initially Hidden) -->
                                 <div
                                     id="batch-options"
                                     class="sub-options hidden"
@@ -271,7 +264,6 @@
                     >
                 </div>
 
-                <!-- GitHub button moved to bottom -->
                 <div class="github-button-container">
                     <a
                         href="https://github.com/aaditagrawal/The-Mass-Contact-Maker"
@@ -296,6 +288,6 @@
                 </div>
             </main>
         </div>
-        <script src="scripts/main.js"></script>
+        <script src="scripts/main.js" defer></script>
     </body>
 </html>
