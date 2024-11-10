@@ -1,6 +1,14 @@
 # The-Mass-Contact-Maker
 This application is designed to solve a simple problem. You might need to save a bunch of contacts from an excel sheet. This does that.
 
+## Why does this exist?
+
+Registration forms store data in Excel files/CSV files. However, if the people have to be added to, say, a WhatsApp group or some other means of communicational broadcast, it is far too tedious to do so manually. Instead, storing them as VCFs of nearly the same names in a single VCF file and installing them highly simplifies contact saving for the same and sending join requests, and makes it easy to delete them too.
+I faced the same problem when I had to perform a similar task so I came up with this.
+
+# Pull Requests Policy
+I am open to pull requests, both that may perhaps want to fix certain preexisting features or add new ones.
+
 ## Features
 
 - Drag & drop Excel/CSV file upload
