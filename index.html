@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Mass Contact Maker</title>
+        <link rel="stylesheet" href="styles/styles.css" />
+        <script src="lib/xlsx.full.min.js"></script>
+        <script src="lib/FileSaver.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <main>
+                <h1 class="hero-title">The Mass Contact Maker</h1>
+                <p class="hero-subtitle">
+                    Transform Excel to VCF contacts. Effortlessly.
+                </p>
+
+                <div class="content-section">
+                    <!-- Instructions Box -->
+                    <!-- Instructions Box -->
+                    <div class="instructions-box">
+                        <div class="instructions-section">
+                            <h2>Quick Start</h2>
+                            <ol>
+                                <li>
+                                    Upload Excel/CSV file containing phone
+                                    numbers
+                                </li>
+                                <li>Name your contact group</li>
+                                <li>Pick the phone number column</li>
+                                <li>
+                                    Choose output format (single file or
+                                    batches)
+                                </li>
+                                <li>Generate VCF</li>
+                            </ol>
+                        </div>
+                        <div class="parameters-section">
+                            <h2>Requirements</h2>
+                            <ul>
+                                <li>Excel (.xlsx/.xls) or CSV file</li>
+                                <li>Valid phone numbers</li>
+                                <li>
+                                    Advanced options available for batch
+                                    processing
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Upload Section -->
+                    <div class="upload-section">
+                        <form id="contact-form">
+                            <div id="drop-zone" class="drop-zone">
+                                <input
+                                    type="file"
+                                    id="file-input"
+                                    accept=".xlsx,.xls,.csv"
+                                    style="display: none"
+                                />
+                                <div class="drop-zone-content">
+                                    <svg
+                                        class="upload-icon"
+                                        width="40"
+                                        height="40"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                                        />
+                                    </svg>
+                                    <p class="drop-text">
+                                        Drop Excel file here
+                                    </p>
+                                    <p class="drop-subtext">
+                                        or click to browse
+                                    </p>
+                                </div>
+                            </div>
+                            <p id="file-name" class="file-name"></p>
+
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    id="group-name"
+                                    value=""
+                                    class="input"
+                                    style="width: 100%; box-sizing: border-box"
+                                    placeholder="Enter Group Name"
+                                />
+                            </div>
+
+                            <div class="input-group">
+                                <select
+                                    id="column-selector"
+                                    class="input"
+                                    style="width: 100%; box-sizing: border-box"
+                                    required
+                                >
+                                    <option value="">
+                                        Select Phone Number Column
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Advanced Mode Toggle -->
+                            <div class="advanced-toggle">
+                                <button
+                                    type="button"
+                                    id="advanced-toggle"
+                                    class="text-button"
+                                >
+                                    <span class="icon">⚙️</span> Advanced
+                                    Options
+                                </button>
+                            </div>
+
+                            <!-- Advanced Options Section -->
+                            <div
+                                id="advanced-options"
+                                class="advanced-options hidden"
+                            >
+                                <div class="option-group">
+                                    <h3>Batch Processing</h3>
+                                    <div class="radio-group">
+                                        <label class="radio-option">
+                                            <input
+                                                type="radio"
+                                                name="batch-type"
+                                                value="single"
+                                                checked
+                                            />
+                                            Single File (All Contacts)
+                                        </label>
+                                        <label class="radio-option">
+                                            <input
+                                                type="radio"
+                                                name="batch-type"
+                                                value="range"
+                                            />
+                                            Custom Range
+                                        </label>
+                                        <label class="radio-option">
+                                            <input
+                                                type="radio"
+                                                name="batch-type"
+                                                value="batch"
+                                            />
+                                            Split into Batches
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Range Options (Initially Hidden) -->
+                                <div
+                                    id="range-options"
+                                    class="sub-options hidden"
+                                >
+                                    <div class="input-row">
+                                        <div class="input-group">
+                                            <label for="range-start"
+                                                >Start</label
+                                            >
+                                            <input
+                                                type="number"
+                                                id="range-start"
+                                                class="input"
+                                                min="1"
+                                                value="1"
+                                            />
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="range-end">End</label>
+                                            <input
+                                                type="number"
+                                                id="range-end"
+                                                class="input"
+                                                min="1"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Batch Options (Initially Hidden) -->
+                                <div
+                                    id="batch-options"
+                                    class="sub-options hidden"
+                                >
+                                    <div class="input-group">
+                                        <label for="batch-size"
+                                            >Contacts per batch</label
+                                        >
+                                        <input
+                                            type="number"
+                                            id="batch-size"
+                                            class="input"
+                                            min="1"
+                                            value="100"
+                                            max="999999"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                id="submit-btn"
+                                class="button"
+                            >
+                                Generate VCF
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="status-alert" class="alert hidden"></div>
+            </main>
+        </div>
+        <script src="scripts/main.js"></script>
+    </body>
+</html>
