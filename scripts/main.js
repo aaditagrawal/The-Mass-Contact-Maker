@@ -197,6 +197,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function setTimedLinkColor() {
+    const hour = new Date().getHours();
+    const color = hour >= 6 && hour < 18 ? "#FFC799" : "#99FFE4";
+    document.documentElement.style.setProperty("--time-based-color", color);
+  }
+
+  setTimedLinkColor();
+
+  setInterval(setTimedLinkColor, 60000);
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 

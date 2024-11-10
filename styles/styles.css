@@ -9,6 +9,7 @@
     --border-color: #424245;
     --success-color: #32d74b;
     --error-color: #ff453a;
+    --time-based-color: #ffc799;
 }
 
 body {
@@ -35,6 +36,15 @@ body {
 
 .github-button-container a {
     text-decoration: none;
+}
+
+.hero-subtitle a {
+    color: var(--time-based-color);
+    text-decoration: none;
+}
+
+.hero-subtitle a:hover {
+    text-decoration: underline;
 }
 
 .Btn {
