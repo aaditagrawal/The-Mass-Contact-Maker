@@ -73,11 +73,11 @@ body {
     padding: var(--spacing-md) var(--spacing-md);
     color: #fff;
     background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
-    background-size: 200% auto;
+    background-size: 400% auto;
     background-position: 0;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shine 3s infinite linear;
+    animation: shine 6s infinite linear;
     animation-fill-mode: forwards;
     font-weight: 600;
     font-size: 16px;
@@ -93,11 +93,10 @@ body {
 
 @keyframes shine {
     0% {
-        background-position: 0;
+        background-position: 0%;
     }
-    60%,
     100% {
-        background-position: 180px;
+        background-position: 400%;
     }
 }
 
