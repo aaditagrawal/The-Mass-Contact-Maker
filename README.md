@@ -1,4 +1,4 @@
-# The-Mass-Contact-Maker
+# The-Mass-Contact-Maker(updated version)(by vedant-mathur)
 This application is designed to solve a simple problem. You might need to save a bunch of contacts from an excel sheet. This does that.
 
 ## Why does this exist?
@@ -23,10 +23,12 @@ I am open to pull requests, both that may perhaps want to fix certain preexistin
 ## Usage
 
 1. Upload an Excel (.xlsx/.xls) or CSV file
-2. Enter a group name for your contacts
-3. Select the column containing phone numbers
-4. Choose output format (single/range/batch)
-5. Click "Generate VCF" to download
+2. choose the column for the last name of your contacts to save
+3. Enter a group name for your contacts for it to be their first name
+4. add a column to add to contacts
+5. Select the column containing phone numbers
+6. Choose output format (single/range/batch)
+7. Click "Generate VCF" to download
 
 ## Requirements
 
