@@ -75,6 +75,7 @@ body {
     background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
     background-size: 400% auto;
     background-position: 0;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shine 6s infinite linear;
@@ -501,6 +502,112 @@ body {
 
 .hidden {
     display: none;
+}
+
+.data-preview {
+    background: rgba(10, 132, 255, 0.05);
+    border: 1px solid rgba(10, 132, 255, 0.2);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-md);
+}
+
+.preview-stats {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius-sm);
+    min-width: 120px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.preview-contacts h4 {
+    margin: 0 0 var(--spacing-md) 0;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.preview-list {
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-md);
+}
+
+.preview-contact {
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: monospace;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.preview-contact:last-child {
+    border-bottom: none;
+}
+
+.preview-contact .contact-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.preview-contact .contact-phone {
+    color: var(--accent-color);
+}
+
+.preview-contact .contact-email {
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.naming-strategy {
+    background: rgba(255, 199, 153, 0.1);
+    border: 1px solid rgba(255, 199, 153, 0.3);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+}
+
+.naming-strategy h3 {
+    margin: 0 0 var(--spacing-md) 0;
+    font-size: 16px;
+    color: var(--time-based-color);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.naming-strategy .radio-group {
+    gap: var(--spacing-sm);
+}
+
+.naming-strategy .radio-option {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--border-radius-sm);
+    font-size: 14px;
 }
 
 .footer-text {

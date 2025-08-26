@@ -11,24 +11,53 @@ I am open to pull requests, both that may perhaps want to fix certain preexistin
 
 ## Features
 
-- Drag & drop Excel/CSV file upload
-- Phone number validation
-- Multiple output options:
+- **File Upload**: Drag & drop Excel/CSV file upload
+- **Enhanced Column Selection**: 
+  - Phone number column (required)
+  - First name column (optional)
+  - Last name column (optional)  
+  - Email column (optional)
+- **Flexible Contact Naming**:
+  - **Column Data Mode**: Uses actual names from Excel/CSV columns
+  - **Sequential Numbering Mode**: Automatically numbers contacts (e.g., ABC_Committee_1, ABC_Committee_2, etc.)
+  - **Mixed Mode**: Sequential group names as first names + column data as last names
+- **International Phone Support**: Multiple country codes supported (India, USA, UK, etc.)
+- **Data Preview**: Real-time preview of contacts with validation statistics
+- **Multiple Output Options**:
   - Single VCF file
   - Custom range selection
   - Batch processing with ZIP output
-- Group naming support
-- Column selection for phone numbers
+- **Smart Contact Naming**: Uses actual names when available, falls back to group naming
+- **Phone Number Validation**: Comprehensive validation for different formats
+- **Email Support**: Include email addresses in VCF contacts
 
 ## Usage
 
-1. Upload an Excel (.xlsx/.xls) or CSV file
-2. choose the column for the last name of your contacts to save
-3. Enter a group name for your contacts for it to be their first name
-4. add a column to add to contacts
-5. Select the column containing phone numbers
-6. Choose output format (single/range/batch)
-7. Click "Generate VCF" to download
+1. **Upload File**: Upload an Excel (.xlsx/.xls) or CSV file containing contact data
+2. **Enter Group Name**: Provide a group name (e.g., "ABC_Committee")
+3. **Choose Naming Strategy**: 
+   - **Column Data**: Use actual first/last names from your file
+   - **Sequential Numbering**: Auto-number contacts (ABC_Committee_1, ABC_Committee_2, etc.)
+   - **Mixed Mode**: Group name + numbers as first names, column data as last names
+4. **Configure Columns**: 
+   - Select the phone number column (required)
+   - Optionally select first name, last name, and email columns
+5. **Set Country Code**: Choose the appropriate country code for phone numbers
+6. **Preview Data**: Review the contact preview and validation statistics
+7. **Choose Output Format**: Select single file, range, or batch processing
+8. **Generate VCF**: Click "Generate VCF" to download your contacts
+
+### Sequential Numbering Example:
+- Group Name: "ABC_Committee"
+- Result: Contacts named ABC_Committee_1, ABC_Committee_2, ABC_Committee_3, etc.
+
+### Mixed Mode Example:
+- Group Name: "ABC_Committee"
+- Last Name Column: Contains "Smith", "Johnson", "Williams"
+- Result: 
+  - First Name: ABC_Committee_1, Last Name: Smith
+  - First Name: ABC_Committee_2, Last Name: Johnson  
+  - First Name: ABC_Committee_3, Last Name: Williams
 
 ## Requirements
 

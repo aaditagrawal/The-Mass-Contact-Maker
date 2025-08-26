@@ -74,6 +74,7 @@
                                     numbers
                                 </li>
                                 <li>Name your contact group</li>
+                                <li>Choose naming strategy (columns or sequential)</li>
                                 <li>Pick the phone number column</li>
                                 <li>
                                     Choose output format (single file or
@@ -136,7 +137,7 @@
 
                             <div class="input-group">
                                 <select
-                                    id="column-selector"
+                                    id="phone-column-selector"
                                     class="input"
                                     required
                                 >
@@ -144,6 +145,88 @@
                                         Select Phone Number Column
                                     </option>
                                 </select>
+                            </div>
+
+                            <div class="input-group">
+                                <select
+                                    id="first-name-column-selector"
+                                    class="input"
+                                >
+                                    <option value="">
+                                        Select First Name Column (Optional)
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <select
+                                    id="last-name-column-selector"
+                                    class="input"
+                                >
+                                    <option value="">
+                                        Select Last Name Column (Optional)
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <select
+                                    id="email-column-selector"
+                                    class="input"
+                                >
+                                    <option value="">
+                                        Select Email Column (Optional)
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <select id="country-code" class="input">
+                                    <option value="+91">India (+91)</option>
+                                    <option value="+1">USA/Canada (+1)</option>
+                                    <option value="+44">UK (+44)</option>
+                                    <option value="+61">Australia (+61)</option>
+                                    <option value="+81">Japan (+81)</option>
+                                    <option value="+86">China (+86)</option>
+                                    <option value="+49">Germany (+49)</option>
+                                    <option value="+33">France (+33)</option>
+                                    <option value="+39">Italy (+39)</option>
+                                    <option value="+34">Spain (+34)</option>
+                                    <option value="+52">Mexico (+52)</option>
+                                    <option value="+55">Brazil (+55)</option>
+                                    <option value="">No Country Code</option>
+                                </select>
+                            </div>
+
+                            <div class="naming-strategy">
+                                <h3>📝 Contact Naming Strategy</h3>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input
+                                            type="radio"
+                                            name="naming-strategy"
+                                            value="use-columns"
+                                            checked
+                                        />
+                                        Use Column Data (First Name, Last Name from file)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input
+                                            type="radio"
+                                            name="naming-strategy"
+                                            value="sequential"
+                                        />
+                                        Sequential Numbering (Group Name + Numbers only)
+                                    </label>
+                                    <label class="radio-option">
+                                        <input
+                                            type="radio"
+                                            name="naming-strategy"
+                                            value="mixed"
+                                        />
+                                        Mixed (Group Name + Numbers as First Name, Column Data as Last Name)
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="advanced-toggle">
@@ -237,6 +320,26 @@
                                             value="100"
                                             max="999999"
                                         />
+                                    </div>
+                                </div>
+
+                                <div class="option-group">
+                                    <h3>📋 Data Preview</h3>
+                                    <div id="data-preview" class="data-preview hidden">
+                                        <div class="preview-stats">
+                                            <div class="stat-item">
+                                                <span class="stat-label">Total Rows:</span>
+                                                <span id="total-rows" class="stat-value">0</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <span class="stat-label">Valid Phone Numbers:</span>
+                                                <span id="valid-phones" class="stat-value">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="preview-contacts">
+                                            <h4>Sample Contacts Preview:</h4>
+                                            <div id="preview-list" class="preview-list"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
