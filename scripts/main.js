@@ -27,6 +27,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentData = null;
 
+  function columnLabel(index) {
+    let label = '';
+    for (let n = index + 1; n > 0; n = Math.floor((n - 1) / 26)) {
+      label = String.fromCharCode(65 + (n - 1) % 26) + label;
+    }
+    return label;
+  }
+
+  function escapeVcard(value) {
+    return String(value).replace(/\\/g, '\\\\').replace(/\r\n|\r|\n/g, '\\n')
+      .replace(/;/g, '\\;').replace(/,/g, '\\,');
+  }
+
+  function formatPhone(value, countryCode) {
+    const raw = String(value).trim();
+    if (raw.startsWith('+')) return '+' + raw.replace(/\D/g, '');
+    if (raw.startsWith('00')) return '+' + raw.slice(2).replace(/\D/g, '');
+    const national = raw.replace(/\D/g, '');
+    return countryCode ? countryCode + national.replace(/^0+/, '') : national;
+  }
+
   if (
     !dropZone ||
     !fileInput ||
@@ -72,10 +93,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (selector) {
           selector.innerHTML = `<option value="">${placeholders[selectorIndex]}</option>`;
           
-          for (let i = 0; i < Math.min(headers.length, 26); i++) {
+          for (let i = 0; i < headers.length; i++) {
             const option = document.createElement("option");
             option.value = i;
-            const columnLetter = String.fromCharCode(65 + i);
+            const columnLetter = columnLabel(i);
             const header = headers[i] ? ` (${headers[i]})` : "";
             option.textContent = `Column ${columnLetter}${header}`;
             selector.appendChild(option);
@@ -168,12 +189,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!text.trim()) {
           throw new Error("File is empty");
         }
-        const lines = text.split(/[\r\n]+/).filter((line) => line.trim());
-        if (lines.length === 0) {
-          throw new Error("File contains no valid data");
-        }
-        headers = lines[0].split(",").map((h) => h.trim());
-        rawData = lines.slice(1).map(line => line.split(",").map(cell => cell.trim()));
+        // SheetJS handles quoted commas, escaped quotes, and multiline CSV cells.
+        const workbook = XLSX.read(text, { type: 'string', raw: true });
+        const allRows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1, defval: '' });
+        headers = allRows[0] || [];
+        rawData = allRows.slice(1);
       } else {
         const data = await file.arrayBuffer();
         const workbook = XLSX.read(data);
@@ -193,22 +213,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentData = rawData;
       populateColumnSelector(headers);
       
-      // Add event listeners for preview updates
-      [phoneColumnSelector, firstNameColumnSelector, lastNameColumnSelector, emailColumnSelector].forEach(selector => {
-        if (selector) {
-          selector.addEventListener('change', updateDataPreview);
-        }
-      });
-      
-      // Add naming strategy listeners
-      namingStrategyRadios.forEach(radio => {
-        radio.addEventListener('change', updateDataPreview);
-      });
-      
-      groupNameInput.addEventListener('input', updateDataPreview);
-      
       updateDataPreview();
     } catch (error) {
+      currentData = null;
+      dataPreview.classList.add("hidden");
       console.error("File processing error:", error);
       showStatus(
         "error",
@@ -216,6 +224,12 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
   }
+
+  [phoneColumnSelector, firstNameColumnSelector, lastNameColumnSelector, emailColumnSelector].forEach(selector => {
+    selector?.addEventListener('change', updateDataPreview);
+  });
+  namingStrategyRadios.forEach(radio => radio.addEventListener('change', updateDataPreview));
+  groupNameInput.addEventListener('input', updateDataPreview);
 
   function validatePhoneNumber(number) {
     if (!number) return false;
@@ -293,11 +307,8 @@ document.addEventListener("DOMContentLoaded", () => {
             
             sampleContacts.push({
               phone: phone,
-              firstName: firstName,
-              lastName: lastName,
               email: email,
               displayName: displayName,
-              index: index + 1
             });
           }
         }
@@ -312,11 +323,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const div = document.createElement('div');
       div.className = 'preview-contact';
       
-      div.innerHTML = `
-        <div class="contact-name">${contact.displayName}</div>
-        <div class="contact-phone">${contact.phone}</div>
-        ${contact.email ? `<div class="contact-email">${contact.email}</div>` : ''}
-      `;
+      for (const [className, value] of [
+        ['contact-name', contact.displayName], ['contact-phone', contact.phone], ['contact-email', contact.email]
+      ]) {
+        if (!value) continue;
+        const field = document.createElement('div');
+        field.className = className;
+        field.textContent = String(value);
+        div.appendChild(field);
+      }
       previewList.appendChild(div);
     });
 
@@ -376,22 +391,19 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           // Format phone number
-          let formattedPhone = contact.phone.toString().replace(/\D/g, "");
-          if (countryCode && !formattedPhone.startsWith(countryCode.replace('+', ''))) {
-            formattedPhone = countryCode + formattedPhone;
-          }
+          const formattedPhone = formatPhone(contact.phone, countryCode);
 
           vcf += "BEGIN:VCARD\n";
           vcf += "VERSION:3.0\n";
-          vcf += `N:${lastName};${firstName};;;\n`;
-          vcf += `FN:${displayName}\n`;
+          vcf += `N:${escapeVcard(lastName)};${escapeVcard(firstName)};;;\n`;
+          vcf += `FN:${escapeVcard(displayName)}\n`;
           vcf += `TEL;TYPE=CELL:${formattedPhone}\n`;
           
           if (contact.email && contact.email.trim()) {
-            vcf += `EMAIL:${contact.email.trim()}\n`;
+            vcf += `EMAIL:${escapeVcard(contact.email.trim())}\n`;
           }
           
-          vcf += `X-WhatsApp-Group:${sanitizedGroupName}\n`;
+          vcf += `X-WhatsApp-Group:${escapeVcard(sanitizedGroupName)}\n`;
           vcf += "END:VCARD\n\n";
           validContacts++;
         } catch (error) {
@@ -447,7 +459,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     try {
-      if (!fileInput.files[0]) {
+      if (!currentData) {
         showStatus("error", "Please select an Excel or CSV file.");
         return;
       }
@@ -468,33 +480,16 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="button-content">Processing...</span>';
 
-      const file = fileInput.files[0];
       const phoneColumnIndex = parseInt(phoneColumnSelector.value);
       const firstNameColumnIndex = firstNameColumnSelector.value ? parseInt(firstNameColumnSelector.value) : null;
       const lastNameColumnIndex = lastNameColumnSelector.value ? parseInt(lastNameColumnSelector.value) : null;
       const emailColumnIndex = emailColumnSelector.value ? parseInt(emailColumnSelector.value) : null;
-      
-      let rawData = [];
-
-      if (file.name.endsWith(".csv")) {
-        const text = await file.text();
-        const rows = text
-          .split(/[\r\n]+/)
-          .filter((row) => row.trim())
-          .map((row) => row.split(",").map(cell => cell.trim()));
-        rawData = rows.slice(1); // Skip header
-      } else {
-        const data = await file.arrayBuffer();
-        const workbook = XLSX.read(data);
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const allRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        rawData = allRows.slice(1); // Skip header
-      }
+      const rawData = currentData;
 
       // Transform raw data into contact objects
       const contactsData = rawData
-        .filter((row) => Array.isArray(row) && row.length > phoneColumnIndex)
         .map((row) => {
+          row = Array.isArray(row) ? row : [];
           const contact = {
             phone: row[phoneColumnIndex],
             firstName: firstNameColumnIndex !== null ? (row[firstNameColumnIndex] || '').toString().trim() : '',
@@ -502,8 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
             email: emailColumnIndex !== null ? (row[emailColumnIndex] || '').toString().trim() : ''
           };
           return contact;
-        })
-        .filter((contact) => contact.phone !== undefined && contact.phone !== null && contact.phone !== "");
+        });
 
       if (contactsData.length === 0) {
         throw new Error("No valid data found in selected columns");
@@ -551,10 +545,14 @@ document.addEventListener("DOMContentLoaded", () => {
           throw new Error("Invalid batch size");
         }
 
+        if (!contactsData.some(contact => validatePhoneNumber(contact.phone))) {
+          throw new Error("No valid phone numbers found");
+        }
         const zip = new JSZip();
 
         for (let i = 0; i < contactsData.length; i += size) {
           const batch = contactsData.slice(i, i + size);
+          if (!batch.some(contact => validatePhoneNumber(contact.phone))) continue;
           const vcfContent = createVcfContacts(batch, i);
           const batchNum = Math.floor(i / size) + 1;
           zip.file(
