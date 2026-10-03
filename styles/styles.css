@@ -186,60 +186,6 @@ body {
     max-width: 680px;
 }
 
-.section-title {
-    font-size: 28px;
-    line-height: 1.14286;
-    font-weight: 600;
-    letter-spacing: 0.007em;
-    text-align: center;
-    margin-bottom: var(--spacing-xl);
-}
-
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    margin-bottom: 60px;
-}
-
-.feature {
-    text-align: center;
-}
-
-.instructions-box ul ul {
-    margin-top: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
-    padding-left: var(--spacing-lg);
-}
-
-.instructions-box ul ul li {
-    color: var(--text-secondary);
-    font-size: 0.95em;
-}
-
-.feature-number {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--accent-color);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto var(--spacing-md);
-    font-weight: 600;
-}
-
-.feature h3 {
-    font-size: 21px;
-    margin-bottom: var(--spacing-sm);
-}
-
-.feature p {
-    color: var(--text-secondary);
-    font-size: 17px;
-    margin: 0;
-}
 
 .drop-zone {
     border: 2px dashed var(--border-color);
@@ -610,12 +556,6 @@ body {
     font-size: 14px;
 }
 
-.footer-text {
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-top: 60px;
-}
 
 @media (max-width: 734px) {
     .hero-title {
@@ -626,10 +566,6 @@ body {
         font-size: 21px;
     }
 
-    .feature-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
-    }
 
     .drop-zone {
         padding: var(--spacing-lg);

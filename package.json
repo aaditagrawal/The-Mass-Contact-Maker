@@ -1,0 +1,11 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "jsdom": "^30.1.1",
+    "xlsx": "^0.18.5"
+  },
+  "private": true,
+  "scripts": {
+    "test": "bun test"
+  }
+}
