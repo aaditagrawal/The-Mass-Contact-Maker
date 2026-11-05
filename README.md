@@ -69,8 +69,32 @@ I am open to pull requests, both that may perhaps want to fix certain preexistin
 
 - Pure JavaScript
 - XLSX.js for Excel processing
-- FileSaver.js for file downloads
-- JSZip for batch processing
+- Browser Blob downloads and an original UTF-8 STORE ZIP writer for batch processing
+
+### Export checks
+
+Run `bun test` and `uv run --no-project python tests/check_zip.py` to check downloads,
+all export modes, and ZIP interoperability. Run `bun install --frozen-lockfile` first
+for the existing DOM tests. Python interoperability uses only the standard library.
+ZIP64 supports batch archives with 65,535 or more entries. Export sizes remain subject
+to the browser's available memory and Blob limits. Downloads use the modern browser
+`download` attribute and object URLs.
+
+The optional `tests/benchmark-exports.mjs` compares exports with the original
+FileSaver and JSZip 3.10.2 in Chrome. It needs a separate Playwright installation,
+passed through `PLAYWRIGHT_MODULE`, and baseline files outside the repository:
+
+```sh
+git show ffb9ccfdfedf026f6922b920795e968997a3d5c5:lib/FileSaver.min.js > /tmp/contact-filesaver.js
+curl --fail --location https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.2/jszip.min.js -o /tmp/contact-jszip.js
+PLAYWRIGHT_MODULE=/path/to/playwright/index.mjs bun tests/benchmark-exports.mjs /tmp/contact-jszip.js /tmp/contact-filesaver.js
+```
+
+Set `CHROME_EXECUTABLE` for another Chrome installation, `BENCH_ONLY` for a
+comma-separated workload subset, and `BENCH_OUTPUT` to save each completed result.
+The benchmark warms both implementations, alternates their order, and reports
+median/p95 export time and maximum event-loop gaps. Browser startup, fixture
+creation, and garbage collection between samples are outside the timed work.
 
 ## Demo
 
