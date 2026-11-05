@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const blob = new Blob([vcfContent], {
           type: "text/vcard;charset=utf-8",
         });
-        saveAs(blob, `${groupNameInput.value}_contacts.vcf`);
+        ContactFiles.downloadBlob(blob, `${groupNameInput.value}_contacts.vcf`);
       } else if (batchType === "range") {
         const start = parseInt(rangeStart.value) - 1;
         const end = parseInt(rangeEnd.value);
@@ -535,7 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const blob = new Blob([vcfContent], {
           type: "text/vcard;charset=utf-8",
         });
-        saveAs(
+        ContactFiles.downloadBlob(
           blob,
           `${groupNameInput.value}_${start + 1}-${end}_contacts.vcf`,
         );
@@ -548,21 +548,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!contactsData.some(contact => validatePhoneNumber(contact.phone))) {
           throw new Error("No valid phone numbers found");
         }
-        const zip = new JSZip();
+        const files = [];
 
         for (let i = 0; i < contactsData.length; i += size) {
           const batch = contactsData.slice(i, i + size);
           if (!batch.some(contact => validatePhoneNumber(contact.phone))) continue;
           const vcfContent = createVcfContacts(batch, i);
           const batchNum = Math.floor(i / size) + 1;
-          zip.file(
-            `${groupNameInput.value}_batch${batchNum}_contacts.vcf`,
-            vcfContent,
-          );
+          files.push({
+            name: `${groupNameInput.value}_batch${batchNum}_contacts.vcf`,
+            content: vcfContent,
+          });
         }
 
-        const zipContent = await zip.generateAsync({ type: "blob" });
-        saveAs(zipContent, `${groupNameInput.value}_contacts.zip`);
+        const zipContent = await ContactFiles.createZip(files);
+        ContactFiles.downloadBlob(zipContent, `${groupNameInput.value}_contacts.zip`);
       }
     } catch (error) {
       console.error("Processing error:", error);
